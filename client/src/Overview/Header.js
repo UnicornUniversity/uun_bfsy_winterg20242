@@ -8,7 +8,7 @@ function Header() {
       AppName
       {userList.map((user) => (
         <button key={user.id} onClick={() => setLoggedInUser(user.id)}>
-          {user.name} {(loggedInUser === user.id).toString()}
+          {user.name} {(user.id === loggedInUser).toString()}
         </button>
       ))}
     </div>

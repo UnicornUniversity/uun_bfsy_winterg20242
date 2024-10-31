@@ -1,50 +1,51 @@
-import { useState, useMemo, useContext } from "react";
+import { useMemo, useState, useContext } from "react";
+
 import { UserContext } from "../Users/UserProvider.js";
 
-import Header from "./Header";
-import ToDoListOverviewList from "./ToDoListOverviewList";
-import Toolbar from "./Toolbar";
+import Header from "./Header.js";
+import ToDoListOverviewList from "./OverviewList.js";
+import Toolbar from "./Toolbar.js";
 
-function ToDoListOverviewProvider() {
+function OverviewProvider() {
   const [showArchived, setShowArchived] = useState(false);
   const { loggedInUser } = useContext(UserContext);
 
-  const [itemList, setItemList] = useState([
+  const [toDoListOverviewList, setToDoListOverviewList] = useState([
     {
       id: "td01",
       name: "První úkolovník",
       state: "active",
       owner: "u1",
-      memberList: ["u2", "u3"],
+      memberList: ["u2"],
     },
     {
       id: "td02",
       name: "Druhý úkolovník",
       state: "archived",
-      owner: "u2",
-      memberList: ["u3"],
+      owner: "u1",
+      memberList: ["u2", "u3"],
     },
     {
       id: "td03",
       name: "Třetí úkolovník",
       state: "active",
       owner: "u3",
-      memberList: ["u1"],
+      memberList: [],
     },
     {
       id: "td04",
       name: "čtvrtý úkolovník",
       state: "archived",
-      owner: "u1",
-      memberList: [],
+      owner: "u2",
+      memberList: ["u1"],
     },
   ]);
 
   function handleCreate() {
-    setItemList((current) => {
+    setToDoListOverviewList((current) => {
       current.push({
         id: Math.random(),
-        name: "nový úkol",
+        name: "Nový úkol",
         state: "active",
         owner: loggedInUser,
         memberList: [],
@@ -53,37 +54,37 @@ function ToDoListOverviewProvider() {
     });
   }
 
-  function handleArchive({ id }) {
-    setItemList((current) => {
-      const itemIndex = current.findIndex((item) => item.id === id);
+  function handleArchive(dtoIn) {
+    setToDoListOverviewList((current) => {
+      const itemIndex = current.findIndex((item) => item.id === dtoIn.id);
       current[itemIndex] = { ...current[itemIndex], state: "archived" };
       return current.slice();
     });
   }
 
-  function handleDelete({ id }) {
-    setItemList((current) => {
-      const itemIndex = current.findIndex((item) => item.id === id);
+  function handleDelete(dtoIn) {
+    setToDoListOverviewList((current) => {
+      const itemIndex = current.findIndex((item) => item.id === dtoIn.id);
       current.splice(itemIndex, 1);
       return current.slice();
     });
   }
 
-  const filteredItemList = useMemo(() => {
+  const filteredToDoListList = useMemo(() => {
     if (showArchived) {
-      return itemList.filter(
+      return toDoListOverviewList.filter(
         (item) =>
-          item.owner === loggedInUser || item.memberList.includes(loggedInUser)
+          item.owner === loggedInUser || item.memberList?.includes(loggedInUser)
       );
     } else {
-      return itemList.filter(
+      return toDoListOverviewList.filter(
         (item) =>
           item.state === "active" &&
           (item.owner === loggedInUser ||
-            item.memberList.includes(loggedInUser))
+            item.memberList?.includes(loggedInUser))
       );
     }
-  }, [showArchived, itemList, loggedInUser]);
+  }, [showArchived, toDoListOverviewList, loggedInUser]);
 
   return (
     <>
@@ -94,7 +95,7 @@ function ToDoListOverviewProvider() {
         setShowArchived={setShowArchived}
       />
       <ToDoListOverviewList
-        itemList={filteredItemList}
+        toDoListOverviewList={filteredToDoListList}
         handleArchive={handleArchive}
         handleDelete={handleDelete}
       />
@@ -102,4 +103,4 @@ function ToDoListOverviewProvider() {
   );
 }
 
-export default ToDoListOverviewProvider;
+export default OverviewProvider;
