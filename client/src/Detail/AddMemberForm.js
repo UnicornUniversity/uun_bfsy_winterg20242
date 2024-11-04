@@ -23,7 +23,7 @@ function AddMemberForm({ show, handleClose, userList, handlerMap }) {
           <Form.Select type="select" name="memberId" required>
             {userList.map((user) => {
               return (
-                <option hey={user.id} value={user.id}>
+                <option key={user.id} value={user.id}>
                   {user.name}
                 </option>
               );
