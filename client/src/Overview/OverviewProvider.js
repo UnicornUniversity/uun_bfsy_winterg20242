@@ -2,7 +2,6 @@ import { useMemo, useState, useContext } from "react";
 
 import { UserContext } from "../Users/UserProvider.js";
 
-import Header from "./Header.js";
 import ToDoListOverviewList from "./OverviewList.js";
 import Toolbar from "./Toolbar.js";
 
@@ -84,7 +83,6 @@ function OverviewProvider() {
 
   return (
     <>
-      <Header />
       <Toolbar handleCreate={handleCreate} showArchived={showArchived} setShowArchived={setShowArchived} />
       <ToDoListOverviewList
         toDoListOverviewList={filteredToDoListList}
