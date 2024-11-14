@@ -1,14 +1,15 @@
 import OverviewItem from "./OverviewItem";
 
-function OverviewList({ OverviewList, handleArchive, handleDelete }) {
+function OverviewList({ toDoListOverviewList, handleArchive, handleDelete, setSelected }) {
   return (
     <div>
-      {OverviewList.map((toDoList) => (
+      {toDoListOverviewList.map((toDoList) => (
         <OverviewItem
           key={toDoList.id}
           toDoList={toDoList}
           handleArchive={handleArchive}
           handleDelete={handleDelete}
+          setSelected={setSelected}
         />
       ))}
     </div>
