@@ -20,27 +20,43 @@ i18n
     resources: {
       en: {
         translation: {
-          AppName: "ToDoList Overview",
-          itemCount_one: "You see {{count}} item",
-          itemCount_other: "You see {{count}} items",
-          // here we will place our translations...
-          today: "Today is {{date}}",
+          header: {
+            appName: "ToDoList App",
+            date: "Today is {{date, DATE_SHORT}}",
+          },
+          itemList: {
+            notResolvedOnly: "not resolved only",
+            allItems: "all items",
+            counter_zero: "No items to show",
+            counter_one: "Only one item to show",
+            counter_other: "Showing {{count}} items",
+          },
         },
       },
       cs: {
         translation: {
-          AppName: "Přehled úkolovníků",
-          itemCount_zero: "Nic nevidíš",
-          itemCount_one: "Vidíš {{count}} položku",
-          itemCount_few: "Vidíš {{count}} položky",
-          itemCount_other: "Vidíš {{count}} položek",
-          // here we will place our translations...
+          header: {
+            appName: "Aplikace úkolovník",
+            date: "Dnes je {{date, DATE_SHORT}}",
+          },
+          itemList: {
+            notResolvedOnly: "pouze nevyřešené",
+            allItems: "všechny položky",
+            counter_zero: "Žádná položka k zobrazení",
+            counter_one: "Zobrazuji pouze jednu položku",
+            counter_few: "Zobrazuji {{count}} položky",
+            counter_other: "Zobrazuji {{count}} položek",
+          },
         },
       },
     },
   });
 
 // new usage
+i18n.services.formatter.add("DATE_SHORT", (value, lng, options) => {
+  return DateTime.fromJSDate(value).setLocale(lng).toLocaleString(DateTime.DATE_SHORT);
+});
+
 i18n.services.formatter.add("DATE_HUGE", (value, lng, options) => {
   return DateTime.fromJSDate(value).setLocale(lng).toLocaleString(DateTime.DATE_HUGE);
 });

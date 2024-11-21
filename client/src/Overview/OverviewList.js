@@ -1,17 +1,27 @@
+import { useContext } from "react";
+import ListGroup from "react-bootstrap/ListGroup";
+import { useSearchParams } from "react-router-dom";
+
+import { OverviewContext } from "./OverviewProvider.js";
 import OverviewItem from "./OverviewItem";
 
-function OverviewList({ OverviewList, handleArchive, handleDelete }) {
+function OverviewList() {
+  const { data } = useContext(OverviewContext);
+  const [searchParams] = useSearchParams();
+  const selectedId = searchParams.get("id");
+
   return (
-    <div>
-      {OverviewList.map((toDoList) => (
-        <OverviewItem
+    <ListGroup>
+      {data.map((toDoList) => (
+        <ListGroup.Item
           key={toDoList.id}
-          toDoList={toDoList}
-          handleArchive={handleArchive}
-          handleDelete={handleDelete}
-        />
+          active={selectedId === toDoList.id}
+          variant={toDoList.state === "active" ? "primary" : "dark"}
+        >
+          <OverviewItem toDoList={toDoList} />
+        </ListGroup.Item>
       ))}
-    </div>
+    </ListGroup>
   );
 }
 
