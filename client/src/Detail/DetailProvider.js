@@ -48,9 +48,7 @@ function DetailProvider({ children }) {
       },
       updateItemName: ({ id, name }) => {
         setData((current) => {
-          const itemIndex = current.itemList.findIndex(
-            (item) => item.id === id
-          );
+          const itemIndex = current.itemList.findIndex((item) => item.id === id);
           current.itemList[itemIndex] = {
             ...current.itemList[itemIndex],
             name,
@@ -60,9 +58,7 @@ function DetailProvider({ children }) {
       },
       toggleResolveItem: ({ id }) => {
         setData((current) => {
-          const itemIndex = current.itemList.findIndex(
-            (item) => item.id === id
-          );
+          const itemIndex = current.itemList.findIndex((item) => item.id === id);
           current.itemList[itemIndex] = {
             ...current.itemList[itemIndex],
             resolved: !current.itemList[itemIndex].resolved,
@@ -72,26 +68,20 @@ function DetailProvider({ children }) {
       },
       deleteItem: ({ id }) => {
         setData((current) => {
-          const itemIndex = current.itemList.findIndex(
-            (item) => item.id === id
-          );
-          console.log(itemIndex);
+          const itemIndex = current.itemList.findIndex((item) => item.id === id);
           current.itemList.splice(itemIndex, 1);
           return { ...current };
         });
       },
       addMember: ({ memberId }) => {
         setData((current) => {
-          if (!current.memberList.includes(memberId))
-            current.memberList.push(memberId);
+          if (!current.memberList.includes(memberId)) current.memberList.push(memberId);
           return { ...current };
         });
       },
       removeMember: ({ memberId }) => {
         setData((current) => {
-          const memberIndex = current.memberList.findIndex(
-            (item) => item === memberId
-          );
+          const memberIndex = current.memberList.findIndex((item) => item === memberId);
           if (memberIndex > -1) current.memberList.splice(memberIndex, 1);
           return { ...current };
         });
@@ -100,9 +90,8 @@ function DetailProvider({ children }) {
     showResolved,
     toggleShowResolved: () => setShowResolved((current) => !current),
   };
-  return (
-    <DetailContext.Provider value={value}>{children}</DetailContext.Provider>
-  );
+
+  return <DetailContext.Provider value={value}>{children}</DetailContext.Provider>;
 }
 
 export default DetailProvider;

@@ -1,30 +1,25 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import "./App.css";
-import Overview from "./Overview/Overview";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Layout from "./Layout";
 import Detail from "./Detail/Detail";
 import UserProvider from "./Users/UserProvider";
-import Header from "./Header";
-import { useState } from "react";
+import OverviewProvider from "./Overview/OverviewProvider";
 
 function App() {
-  let params = new URLSearchParams(document.location.search);
-  let id = params.get("id");
-
-  const [selected, setSelected] = useState(id);
-
-  console.log(selected);
-
   return (
-    <div className="App">
+    <div className="m-4">
       <UserProvider>
-        <Header />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr" }}>
-          <div>
-            <Overview setSelected={setSelected} />
-          </div>
-          <div>{!selected ? "nothing selected" : <Detail />}</div>
-        </div>
+        <OverviewProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Detail />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </OverviewProvider>
       </UserProvider>
     </div>
   );

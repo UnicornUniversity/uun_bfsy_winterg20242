@@ -1,11 +1,10 @@
-import { useMemo, useState, useContext } from "react";
+import { createContext, useMemo, useState, useContext } from "react";
 
 import { UserContext } from "../Users/UserProvider.js";
 
-import ToDoListOverviewList from "./OverviewList.js";
-import Toolbar from "./Toolbar.js";
+export const OverviewContext = createContext();
 
-function OverviewProvider({ setSelected }) {
+function OverviewProvider({ children }) {
   const [showArchived, setShowArchived] = useState(false);
   const { loggedInUser } = useContext(UserContext);
 
@@ -40,11 +39,11 @@ function OverviewProvider({ setSelected }) {
     },
   ]);
 
-  function handleCreate() {
+  function handleCreate(dtoIn) {
     setToDoListOverviewList((current) => {
       current.push({
         id: Math.random(),
-        name: "Nový úkol",
+        name: dtoIn.name,
         state: "active",
         owner: loggedInUser,
         memberList: [],
@@ -81,17 +80,18 @@ function OverviewProvider({ setSelected }) {
     }
   }, [showArchived, toDoListOverviewList, loggedInUser]);
 
-  return (
-    <>
-      <Toolbar handleCreate={handleCreate} showArchived={showArchived} setShowArchived={setShowArchived} />
-      <ToDoListOverviewList
-        toDoListOverviewList={filteredToDoListList}
-        handleArchive={handleArchive}
-        handleDelete={handleDelete}
-        setSelected={setSelected}
-      />
-    </>
-  );
+  const value = {
+    data: filteredToDoListList,
+    handlerMap: {
+      handleCreate,
+      handleArchive,
+      handleDelete,
+    },
+    showArchived,
+    setShowArchived,
+  };
+
+  return <OverviewContext.Provider value={value}>{children}</OverviewContext.Provider>;
 }
 
 export default OverviewProvider;
