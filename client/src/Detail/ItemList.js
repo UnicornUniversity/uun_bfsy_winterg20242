@@ -18,6 +18,8 @@ function ItemList() {
     useContext(DetailContext);
   // const { t } = useTranslation();
 
+  console.log(data?.itemList);
+
   return (
     <div className="p-2">
       <Stack direction="horizontal" gap="2">
@@ -38,9 +40,13 @@ function ItemList() {
         </Button>
       </Stack>
       <div className="p-2">
-        {data.itemList?.map((item) => (
-          <Item key={item.id} data={item} handlerMap={handlerMap} />
-        ))}
+        {data ? (
+          data.itemList?.map((item) => (
+            <Item key={item.id} data={item} handlerMap={handlerMap} />
+          ))
+        ) : (
+          <div>placeholder</div>
+        )}
       </div>
     </div>
   );

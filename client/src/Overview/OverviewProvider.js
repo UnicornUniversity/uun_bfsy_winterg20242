@@ -10,7 +10,7 @@ function OverviewProvider({ children }) {
   const { loggedInUser } = useContext(UserContext);
 
   const [overviewDataLoader, setOverviewDataLoader] = useState({
-    state: "ready",
+    state: "ready", // ready / pending / error
     data: null,
     error: null,
   });
@@ -21,7 +21,6 @@ function OverviewProvider({ children }) {
       return { ...current, state: "pending" };
     });
     const result = await FetchHelper().toDoList.list();
-    console.log(result);
     setOverviewDataLoader((current) => {
       if (result.ok) {
         return {
@@ -36,21 +35,19 @@ function OverviewProvider({ children }) {
     });
   }
 
-  console.log(overviewDataLoader);
+  useEffect(() => {
+    handleLoad();
+  }, []);
 
-  useEffect(() => handleLoad(), []);
-
-  function handleCreate(dtoIn) {
-    setToDoListOverviewList((current) => {
-      current.push({
-        id: Math.random(),
-        name: dtoIn.name,
-        state: "active",
-        owner: loggedInUser,
-        memberList: [],
-      });
-      return current.slice();
+  async function handleCreate(dtoIn) {
+    setOverviewDataLoader((current) => {
+      return { ...current, state: "pending" };
     });
+    await FetchHelper().toDoList.create({
+      name: dtoIn.name,
+      owner: loggedInUser,
+    });
+    handleLoad();
   }
 
   function handleArchive(dtoIn) {
